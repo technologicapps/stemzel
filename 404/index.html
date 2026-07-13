@@ -546,7 +546,318 @@
     
     <!-- End of headEnd -->
 	
-<style id="stemzel-hide-framer-badge">#__framer-badge-container,a.__framer-badge,.framer-bmpgw8[href*="framer.com"]{display:none!important;visibility:hidden!important;pointer-events:none!important;height:0!important;width:0!important;overflow:hidden!important;opacity:0!important;}</style>
+<style id="stemzel-site-cleanup">
+#__framer-badge-container,
+a.__framer-badge,
+.framer-bmpgw8[href*="framer.com"],
+a[href*="framer.com/edit"],
+a[href*="framer.com/projects"],
+iframe[src*="framer.com/edit"],
+[data-framer-edit-button] {
+  display: none !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+.framer-1jmteap-container,
+.framer-1khemdj-container,
+.framer-p9fqq5-container,
+.framer-1uxdaoi {
+  display: none !important;
+}
+
+/* Hide broken Framer footers; we inject a clean one */
+footer:not(#stemzel-footer) {
+  display: none !important;
+}
+
+#stemzel-footer {
+  display: block !important;
+  position: relative !important;
+  z-index: 50 !important;
+  width: 100%;
+  box-sizing: border-box;
+  background: #000;
+  color: #fafafa;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 56px clamp(24px, 6vw, 80px) 40px;
+  margin-top: 64px;
+  clear: both;
+  font-family: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+}
+html, body, #main, [data-framer-root] {
+  overflow: visible !important;
+  height: auto !important;
+}
+#stemzel-footer .wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  gap: 48px !important;
+  width: 100% !important;
+}
+#stemzel-footer .wrap > div {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+}
+#stemzel-footer .wrap > div:nth-child(2),
+#stemzel-footer .wrap > div:nth-child(3) {
+  text-align: left !important;
+}
+#stemzel-footer .brand {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin: 0 0 10px;
+}
+#stemzel-footer .tag {
+  color: #888;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+  max-width: 280px;
+}
+#stemzel-footer .col-title {
+  color: #666;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 14px;
+}
+#stemzel-footer .links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+#stemzel-footer a {
+  color: #cfcfcf;
+  text-decoration: none;
+  font-size: 14px;
+}
+#stemzel-footer a:hover { color: #fff; }
+#stemzel-footer .bottom {
+  max-width: 1100px;
+  margin: 36px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  color: #666;
+  font-size: 12px;
+}
+@media (max-width: 800px) {
+  #stemzel-footer .wrap {
+    flex-direction: column !important;
+    flex-wrap: wrap !important;
+    gap: 28px !important;
+  }
+}
+
+/* Header: true full-bar centering for Benefits / Pricing */
+nav[data-framer-name="Desktop"] {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  padding-inline: 20px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+}
+nav[data-framer-name="Desktop"] .stemzel-nav-cluster {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 48px !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  transform: translateX(-50%) !important;
+  margin-block: auto !important;
+  height: fit-content !important;
+  z-index: 2 !important;
+  pointer-events: auto !important;
+}
+nav[data-framer-name="Desktop"] .stemzel-nav-cluster > * {
+  position: static !important;
+  transform: none !important;
+  left: auto !important;
+  top: auto !important;
+  right: auto !important;
+  inset: auto !important;
+}
+
+/* Kill Framer on-page edit / badge chrome */
+#__framer-badge-container,
+a.__framer-badge,
+[data-framer-edit-button],
+[data-framer-portal-target],
+iframe[src*="framer.com/edit"],
+a[href*="framer.com/edit"],
+a[href*="framer.com/projects"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+</style>
+<script id="stemzel-layout-fix">
+(function () {
+  const kill = new Set(["features", "testimonials", "faq's", "faqs", "faq"]);
+  const norm = (s) => (s || "").trim().toLowerCase().replace(/[’']/g, "'");
+
+  function nukeEdit() {
+    document.querySelectorAll("a[href*='framer.com/edit'], a[href*='framer.com/projects'], iframe[src*='framer.com/edit'], #__framer-badge-container, a.__framer-badge").forEach((el) => el.remove());
+    document.querySelectorAll("body *").forEach((el) => {
+      try {
+        const text = (el.innerText || el.textContent || "").replace(/\s+/g, " ").trim();
+        if (!/edit\s*page/i.test(text)) return;
+        if (text.length > 40) return;
+        let node = el;
+        for (let i = 0; i < 6 && node && node !== document.body; i++) {
+          const r = node.getBoundingClientRect();
+          const cs = getComputedStyle(node);
+          const floating = cs.position === "fixed" || cs.position === "absolute";
+          if (r.width > 0 && r.width < 360 && r.height < 200 && (floating || r.right > innerWidth - 280)) {
+            node.remove();
+            return;
+          }
+          node = node.parentElement;
+        }
+      } catch (_) {}
+    });
+    for (const el of [...document.querySelectorAll("body *")]) {
+      try {
+        const cs = getComputedStyle(el);
+        if (cs.position !== "fixed") continue;
+        const r = el.getBoundingClientRect();
+        const text = (el.innerText || "").replace(/\s+/g, " ").trim();
+        if (r.width > 0 && r.width < 360 && r.height < 200 && /edit/i.test(text)) el.remove();
+      } catch (_) {}
+    }
+  }
+
+  function hideKilledNavLinks() {
+    document.querySelectorAll("nav a").forEach((a) => {
+      if (kill.has(norm(a.textContent))) {
+        const wrap = a.closest("[class*='-container']") || a;
+        wrap.style.setProperty("display", "none", "important");
+      }
+    });
+  }
+
+  function clusterHeader() {
+    const nav = document.querySelector('nav[data-framer-name="Desktop"]');
+    if (!nav) return;
+    const wraps = [...nav.querySelectorAll("[class*='-container']")].filter((c) => {
+      const a = c.querySelector("a");
+      if (!a) return false;
+      const t = norm(a.textContent);
+      return t === "benefits" || t === "pricing";
+    });
+    if (!wraps.length) return;
+    let cluster = nav.querySelector(".stemzel-nav-cluster");
+    if (!cluster) {
+      cluster = document.createElement("div");
+      cluster.className = "stemzel-nav-cluster";
+    }
+    // Must be a direct child of nav so left:50% is relative to the full header bar
+    if (cluster.parentElement !== nav) nav.appendChild(cluster);
+    wraps.forEach((w) => {
+      if (w.parentElement !== cluster) cluster.appendChild(w);
+    });
+  }
+
+  function createFooterEl() {
+    const footer = document.createElement("footer");
+    footer.id = "stemzel-footer";
+    footer.innerHTML = `
+      <div class="wrap">
+        <div>
+          <p class="brand">Stemzel</p>
+          <p class="tag">Split stems the right way — fully on device.</p>
+        </div>
+        <div>
+          <p class="col-title">Product</p>
+          <div class="links">
+            <a href="/#benefits">Benefits</a>
+            <a href="/#pricing">Pricing</a>
+          </div>
+        </div>
+        <div>
+          <p class="col-title">Company</p>
+          <div class="links">
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms-of-service/">Terms of Service</a>
+            <a href="mailto:support@stemzel.com">Support</a>
+          </div>
+        </div>
+      </div>
+      <div class="bottom">© ${new Date().getFullYear()} Stemzel</div>
+    `;
+    return footer;
+  }
+
+  function ensureFooter() {
+    let footer = document.getElementById("stemzel-footer");
+    if (!footer) footer = createFooterEl();
+
+    // Keep footer as a direct body child AFTER #main so React/Framer cannot eat it
+    if (footer.parentElement !== document.body || document.body.lastElementChild !== footer) {
+      document.body.appendChild(footer);
+    }
+
+    const main = document.getElementById("main");
+    if (main) {
+      main.style.position = "relative";
+      main.style.minHeight = "100vh";
+      main.style.height = "auto";
+      main.style.overflow = "visible";
+    }
+    document.documentElement.style.overflow = "auto";
+    document.body.style.overflow = "auto";
+    document.body.style.height = "auto";
+    document.body.style.minHeight = "100vh";
+  }
+
+  let q = false;
+  function run() {
+    if (q) return;
+    q = true;
+    requestAnimationFrame(() => {
+      q = false;
+      nukeEdit();
+      hideKilledNavLinks();
+      clusterHeader();
+      ensureFooter();
+    });
+  }
+
+  run();
+  addEventListener("load", run);
+  setTimeout(run, 400);
+  setTimeout(run, 1500);
+  setInterval(() => {
+    nukeEdit();
+    document.querySelectorAll("body *").forEach((el) => {
+      const t = (el.innerText || "").trim();
+      if (t === "Edit page" || t === "Edit Page" || /^Edit page$/i.test(t)) {
+        let node = el;
+        for (let i = 0; i < 5 && node; i++) {
+          const r = node.getBoundingClientRect?.();
+          if (r && r.width < 300 && r.height < 160) { node.remove(); break; }
+          node = node.parentElement;
+        }
+      }
+    });
+  }, 500);
+})();
+</script>
 </head>
 <body>
 	<!-- Start of bodyStart -->
@@ -565,5 +876,31 @@
 	<!-- Start of bodyEnd -->
     
     <!-- End of bodyEnd -->
+
+<footer id="stemzel-footer">
+  <div class="wrap">
+    <div>
+      <p class="brand">Stemzel</p>
+      <p class="tag">Split stems the right way — fully on device.</p>
+    </div>
+    <div>
+      <p class="col-title">Product</p>
+      <div class="links">
+        <a href="/#benefits">Benefits</a>
+        <a href="/#pricing">Pricing</a>
+      </div>
+    </div>
+    <div>
+      <p class="col-title">Company</p>
+      <div class="links">
+        <a href="/privacy/">Privacy Policy</a>
+        <a href="/terms-of-service/">Terms of Service</a>
+        <a href="mailto:support@stemzel.com">Support</a>
+      </div>
+    </div>
+  </div>
+  <div class="bottom">© 2026 Stemzel</div>
+</footer>
+
 </body>
 </html>
