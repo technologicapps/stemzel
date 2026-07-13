@@ -546,7 +546,13 @@
     
     <!-- End of headEnd -->
 	
-<style id="stemzel-hide-framer-badge">#__framer-badge-container,a.__framer-badge,.framer-bmpgw8[href*="framer.com"]{display:none!important;visibility:hidden!important;pointer-events:none!important;height:0!important;width:0!important;overflow:hidden!important;opacity:0!important;}</style>
+<style id="stemzel-site-cleanup">
+#__framer-badge-container,a.__framer-badge,.framer-bmpgw8[href*="framer.com"]{display:none!important;visibility:hidden!important;pointer-events:none!important;height:0!important;width:0!important;overflow:hidden!important;opacity:0!important;}
+.framer-1jmteap-container,
+.framer-1khemdj-container,
+.framer-p9fqq5-container,
+.framer-1uxdaoi{display:none!important;}
+</style>
 </head>
 <body>
 	<script async src="https://events.framer.com/script?v=2" data-fid="56cec095b28bb51de1acfa6486e5d308820a42809d5d1a1e0e852e766112bf1a" data-no-nt></script>
@@ -568,5 +574,21 @@
 	<!-- Start of bodyEnd -->
     
     <!-- End of bodyEnd -->
+<script id="stemzel-nav-cleanup">
+(function(){
+  const kill = new Set(["features","testimonials","faq's","faqs","faq"]);
+  function clean(root){
+    root.querySelectorAll("a").forEach(a => {
+      const t = (a.textContent || "").trim().toLowerCase().replace(/’/g, "'");
+      if (kill.has(t)) {
+        const wrap = a.closest("[class*='-container']") || a.closest("p") || a;
+        wrap.remove();
+      }
+    });
+  }
+  clean(document);
+  new MutationObserver(() => clean(document)).observe(document.documentElement, {childList:true, subtree:true});
+})();
+</script>
 </body>
 </html>
