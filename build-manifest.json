@@ -1,0 +1,18 @@
+{
+  "site": "https://stemzel.framer.ai",
+  "pages": [
+    "/",
+    "/privacy-policy",
+    "/terms-of-service",
+    "/404"
+  ],
+  "file_count": 173,
+  "size_bytes": 8300582,
+  "modules": 26,
+  "notes": [
+    "HTML assets are self-hosted under ./assets",
+    "JS modules kept with original CDN font URLs where needed; modules themselves are local",
+    "Appear animations run via inline Framer animator in each HTML page",
+    "Terms of Service title corrected (Framer published it as Privacy Policy)"
+  ]
+}
