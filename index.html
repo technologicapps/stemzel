@@ -7,8 +7,8 @@
 	<meta name="generator" content="Framer 1a21bd5">
 	<title>Stemzel</title>
     <meta name="description" content="Split Stems the Right Way">
-    <meta name="framer-search-index" content="https://framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/searchIndex-Z3ReDhSaEd6b.json">
-    <meta name="framer-search-index-fallback" content="https://framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/searchIndex-UWOegLc6zG5s.json">
+    <meta name="framer-search-index" content="assets/framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/searchIndex-Z3ReDhSaEd6b.json">
+    <meta name="framer-search-index-fallback" content="assets/framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/searchIndex-UWOegLc6zG5s.json">
     <meta name="framer-html-plugin" content="disable">
     <link href="https://framerusercontent.com/images/ASMyltigclXXPN7IbFLBHA7bZB0.png" rel="icon" media="(prefers-color-scheme: light)">
     <link href="https://framerusercontent.com/images/ASMyltigclXXPN7IbFLBHA7bZB0.png" rel="icon" media="(prefers-color-scheme: dark)">
@@ -546,16 +546,143 @@
     
     <!-- End of headEnd -->
 	
+
+
+
 <style id="stemzel-site-cleanup">
-#__framer-badge-container,a.__framer-badge,.framer-bmpgw8[href*="framer.com"]{display:none!important;visibility:hidden!important;pointer-events:none!important;height:0!important;width:0!important;overflow:hidden!important;opacity:0!important;}
+#__framer-badge-container,
+a.__framer-badge,
+.framer-bmpgw8[href*="framer.com"],
+a[href*="framer.com/edit"],
+a[href*="framer.com/projects"],
+iframe[src*="framer.com/edit"],
+[data-framer-edit-button] {
+  display: none !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+/* Hide removed sections only */
 .framer-1jmteap-container,
 .framer-1khemdj-container,
 .framer-p9fqq5-container,
-.framer-1uxdaoi{display:none!important;}
+.framer-1uxdaoi {
+  display: none !important;
+}
+
+/* Soften absolute Framer nav/footer link placement without breaking layout */
+nav[data-framer-name="Desktop"] [class*="-container"]:has(a) {
+  /* leave Framer positioning; we'll nudge via JS coords-free flex only on a wrapper we own */
+}
 </style>
+<script id="stemzel-layout-fix">
+(function () {
+  const kill = new Set(["features", "testimonials", "faq's", "faqs", "faq"]);
+  const norm = (s) => (s || "").trim().toLowerCase().replace(/[’']/g, "'");
+
+  function nukeEdit() {
+    document.querySelectorAll("a[href*='framer.com/edit'], a[href*='framer.com/projects'], iframe[src*='framer.com/edit']").forEach((el) => el.remove());
+    for (const el of [...(document.body?.children || [])]) {
+      try {
+        const cs = getComputedStyle(el);
+        if (cs.position !== "fixed") continue;
+        const r = el.getBoundingClientRect();
+        const small = r.width < 260 && r.height < 140;
+        const rightish = r.right > innerWidth - 200;
+        if (small && rightish && (norm(el.textContent).includes("edit") || el.querySelector("svg"))) {
+          el.remove();
+        }
+      } catch (_) {}
+    }
+  }
+
+  function hideKilledLinks() {
+    document.querySelectorAll("a").forEach((a) => {
+      if (kill.has(norm(a.textContent))) {
+        const wrap = a.closest("[class*='-container']") || a.closest("p") || a;
+        // Only hide the smallest wrapper, never climb to footer/nav/main
+        if (wrap && !wrap.matches("footer, nav, body, #main, [data-framer-root]")) {
+          // Prefer hiding just the anchor's immediate paragraph
+          const p = a.closest("p");
+          (p || a).style.setProperty("display", "none", "important");
+        }
+      }
+    });
+  }
+
+  function centerDesktopNavLinks() {
+    const nav = document.querySelector('nav[data-framer-name="Desktop"]');
+    if (!nav) return;
+    const items = [...nav.querySelectorAll("a")].filter((a) => {
+      const t = norm(a.textContent);
+      return t === "benefits" || t === "pricing";
+    });
+    if (items.length < 2) return;
+
+    // Measure logo/title block left edge and nav width, then distribute links in remaining space
+    const navRect = nav.getBoundingClientRect();
+    const logo = nav.querySelector('[data-framer-name="Logo"], [data-framer-name="Brand"], a, div');
+    // Find leftmost non-link brand content
+    let brandRight = navRect.left + 160;
+    const brandCandidate = nav.querySelector('[class*="logo"], img, svg');
+    if (brandCandidate) {
+      const b = brandCandidate.getBoundingClientRect();
+      brandRight = Math.max(brandRight, b.right + 24);
+    }
+
+    const usableLeft = brandRight;
+    const usableRight = navRect.right - 24;
+    const usable = Math.max(200, usableRight - usableLeft);
+    const gap = usable / (items.length + 1);
+
+    items.forEach((a, i) => {
+      const wrap = a.closest("[class*='-container']") || a;
+      const x = usableLeft + gap * (i + 1) - navRect.left;
+      wrap.style.setProperty("position", "absolute", "important");
+      wrap.style.setProperty("left", x + "px", "important");
+      wrap.style.setProperty("right", "auto", "important");
+      wrap.style.setProperty("transform", "translateX(-50%)", "important");
+      wrap.style.setProperty("top", "50%", "important");
+      wrap.style.setProperty("margin-top", "-0.6em", "important");
+    });
+  }
+
+  function evenlySpaceFooterColumns() {
+    document.querySelectorAll("footer").forEach((footer) => {
+      footer.style.setProperty("display", "block", "important");
+      footer.style.setProperty("visibility", "visible", "important");
+      footer.style.setProperty("opacity", "1", "important");
+    });
+  }
+
+  let q = false;
+  function run() {
+    if (q) return;
+    q = true;
+    requestAnimationFrame(() => {
+      q = false;
+      nukeEdit();
+      hideKilledLinks();
+      centerDesktopNavLinks();
+      evenlySpaceFooterColumns();
+    });
+  }
+
+  run();
+  addEventListener("load", run);
+  setTimeout(run, 400);
+  setTimeout(run, 1500);
+  // Do NOT observe all mutations forever in a heavy way — only occasional
+  let i = 0;
+  const mo = new MutationObserver(() => {
+    if (++i % 5 === 0) run();
+  });
+  mo.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+
 </head>
 <body>
-	<script async src="https://events.framer.com/script?v=2" data-fid="56cec095b28bb51de1acfa6486e5d308820a42809d5d1a1e0e852e766112bf1a" data-no-nt></script>
 	<!-- Start of bodyStart -->
     
     <!-- End of bodyStart -->
@@ -569,26 +696,10 @@
                 <script type="framer/appear" id="__framer__appearAnimationsContent">{"z76nyu":{"default":{"initial":{"opacity":0.001,"rotate":0,"rotateX":0,"rotateY":0,"scale":0.8,"skewX":0,"skewY":0,"x":0,"y":60},"animate":{"opacity":1,"rotate":0,"rotateX":0,"rotateY":0,"scale":1,"skewX":0,"skewY":0,"transition":{"damping":50,"delay":0.6,"mass":1,"stiffness":150,"type":"spring"},"x":0,"y":0}}},"7acvyr":{"default":{"initial":{"opacity":0.001,"rotate":0,"rotateX":0,"rotateY":0,"scale":0.8,"skewX":0,"skewY":0,"x":0,"y":60},"animate":{"opacity":1,"rotate":0,"rotateX":0,"rotateY":0,"scale":1,"skewX":0,"skewY":0,"transition":{"damping":50,"delay":0.7,"mass":1,"stiffness":150,"type":"spring"},"x":0,"y":0},"transformTemplate":"translateX(-50%) __Appear_Animation_Transform__"},"121i3k8":{"initial":{"opacity":0.001,"rotate":0,"rotateX":0,"rotateY":0,"scale":0.8,"skewX":0,"skewY":0,"x":0,"y":60},"animate":{"opacity":1,"rotate":0,"rotateX":0,"rotateY":0,"scale":1,"skewX":0,"skewY":0,"transition":{"damping":50,"delay":0.7,"mass":1,"stiffness":150,"type":"spring"},"x":0,"y":0},"transformTemplate":"translateX(-50%) __Appear_Animation_Transform__"},"s4vk9i":{"initial":{"opacity":0.001,"rotate":0,"rotateX":0,"rotateY":0,"scale":0.8,"skewX":0,"skewY":0,"x":0,"y":60},"animate":{"opacity":1,"rotate":0,"rotateX":0,"rotateY":0,"scale":1,"skewX":0,"skewY":0,"transition":{"damping":50,"delay":0.7,"mass":1,"stiffness":150,"type":"spring"},"x":0,"y":0},"transformTemplate":"translateX(-50%) __Appear_Animation_Transform__"}},"3bpdj9":{"default":{"initial":{"opacity":0.001,"rotate":0,"rotateX":0,"rotateY":0,"scale":0.8,"skewX":0,"skewY":0,"x":0,"y":60},"animate":{"opacity":1,"rotate":0,"rotateX":0,"rotateY":0,"scale":1,"skewX":0,"skewY":0,"transition":{"damping":50,"delay":0.6,"mass":1,"stiffness":150,"type":"spring"},"x":0,"y":0}}}}</script>
                 <script type="framer/appear" id="__framer__breakpoints">[{"hash":"72rtr7","mediaQuery":"(min-width: 1200px)"},{"hash":"s4vk9i","mediaQuery":"(min-width: 810px) and (max-width: 1199.98px)"},{"hash":"121i3k8","mediaQuery":"(max-width: 809.98px)"}]</script><script data-framer-appear-animation="no-preference">(()=>{function c(i,o,s){if(window.__framer_disable_appear_effects_optimization__||typeof animator>"u")return;let e={detail:{bg:document.hidden}};requestAnimationFrame(()=>{let a="framer-appear-start";performance.mark(a,e),animator.animateAppearEffects(JSON.parse(window.__framer__appearAnimationsContent.text),(m,p,d)=>{let t=document.querySelector(m);if(t)for(let[r,f]of Object.entries(p))animator.startOptimizedAppearAnimation(t,r,f,d[r])},i,o,s&&window.matchMedia("(prefers-reduced-motion:reduce)").matches===!0,animator.getActiveVariantHash(JSON.parse(window.__framer__breakpoints.text)));let n="framer-appear-end";performance.mark(n,e),performance.measure("framer-appear",{start:a,end:n,detail:e.detail})})}return c})()("data-framer-appear-id","__Appear_Animation_Transform__",false)</script>
 	<script>typeof document<"u"&&(window.process={...window.process,env:{...window.process?.env,NODE_ENV:"production"}});</script>
-	<link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/rolldown-runtime.Dh6celcD.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/react.Dfbt0i5D.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/framer.DExKux4p.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/motion.CmMXP_xI.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/AdkHDqDgKR-4COUm6wOauLx4T2f8dWy0Kzhl2PEUV5c.DPRH1SDF.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/LS5mjhnKi.qW1evC0G.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/shared-lib.CSxLFbF8.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/augiA20Il.CuMbIiF8.mjs"><script type="module" async data-framer-bundle="main" fetchpriority="low" src="https://framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/script_main.CJBm9Lhm.mjs"></script><div id="svg-templates" style="position: absolute; overflow: hidden; bottom: 0; left: 0; width: 0; height: 0; z-index: 0; contain: strict" aria-hidden="true">
+	<link rel="modulepreload" fetchpriority="low" href="assets/framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/rolldown-runtime.Dh6celcD.mjs"><link rel="modulepreload" fetchpriority="low" href="assets/framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/react.Dfbt0i5D.mjs"><link rel="modulepreload" fetchpriority="low" href="assets/framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/framer.DExKux4p.mjs"><link rel="modulepreload" fetchpriority="low" href="assets/framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/motion.CmMXP_xI.mjs"><link rel="modulepreload" fetchpriority="low" href="assets/framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/AdkHDqDgKR-4COUm6wOauLx4T2f8dWy0Kzhl2PEUV5c.DPRH1SDF.mjs"><link rel="modulepreload" fetchpriority="low" href="assets/framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/LS5mjhnKi.qW1evC0G.mjs"><link rel="modulepreload" fetchpriority="low" href="assets/framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/shared-lib.CSxLFbF8.mjs"><link rel="modulepreload" fetchpriority="low" href="assets/framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/augiA20Il.CuMbIiF8.mjs"><script type="module" async data-framer-bundle="main" fetchpriority="low" src="assets/framerusercontent.com/sites/14nJLNAeVlyOYddnJ1eXdy/script_main.CJBm9Lhm.mjs"></script><div id="svg-templates" style="position: absolute; overflow: hidden; bottom: 0; left: 0; width: 0; height: 0; z-index: 0; contain: strict" aria-hidden="true">
 </div>
 	<!-- Start of bodyEnd -->
     
     <!-- End of bodyEnd -->
-<script id="stemzel-nav-cleanup">
-(function(){
-  const kill = new Set(["features","testimonials","faq's","faqs","faq"]);
-  function clean(root){
-    root.querySelectorAll("a").forEach(a => {
-      const t = (a.textContent || "").trim().toLowerCase().replace(/’/g, "'");
-      if (kill.has(t)) {
-        const wrap = a.closest("[class*='-container']") || a.closest("p") || a;
-        wrap.remove();
-      }
-    });
-  }
-  clean(document);
-  new MutationObserver(() => clean(document)).observe(document.documentElement, {childList:true, subtree:true});
-})();
-</script>
 </body>
 </html>
