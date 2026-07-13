@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Support — Stemzel</title>
+  <meta name="description" content="Get Stemzel help by email, plus answers to common questions about imports, stem splitting, purchases, and privacy.">
+  <link rel="canonical" href="https://stemzel.com/support">
+  <style>
+    :root {
+      --bg: #000;
+      --text: #fafafa;
+      --muted: #888;
+      --border: rgba(255, 255, 255, 0.1);
+      --card: #111;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--text); text-underline-offset: 3px; }
+    a:hover { opacity: 0.75; }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    header .brand {
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    header nav {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+    header nav a {
+      text-decoration: none;
+      color: #cfcfcf;
+      font-size: 14px;
+    }
+    header nav a:hover { color: var(--text); opacity: 1; }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      margin: 0 0 12px;
+      line-height: 1.1;
+    }
+    .lead {
+      color: #cfcfcf;
+      font-size: 16px;
+      margin: 0 0 32px;
+    }
+    .contact {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 22px 20px;
+      margin: 0 0 48px;
+    }
+    .contact h2 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+    .contact p { margin: 0 0 12px; color: #cfcfcf; font-size: 15px; }
+    .contact p:last-child { margin-bottom: 0; }
+    .email {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .email:hover { opacity: 0.8; }
+    h2.section {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin: 0 0 20px;
+    }
+    details.faq {
+      border-top: 1px solid var(--border);
+      padding: 16px 0;
+    }
+    details.faq:last-of-type {
+      border-bottom: 1px solid var(--border);
+    }
+    details.faq summary {
+      cursor: pointer;
+      list-style: none;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      font-size: 15px;
+      padding-right: 28px;
+      position: relative;
+    }
+    details.faq summary::-webkit-details-marker { display: none; }
+    details.faq summary::after {
+      content: "+";
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    details.faq[open] summary::after { content: "–"; }
+    details.faq p, details.faq li {
+      color: #cfcfcf;
+      font-size: 15px;
+      margin: 12px 0 0;
+    }
+    details.faq ul {
+      margin: 10px 0 0;
+      padding-left: 1.2em;
+    }
+    details.faq li { margin: 6px 0; }
+    footer.page-foot {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 560px) {
+      header nav { gap: 16px; }
+      header nav a:nth-child(1),
+      header nav a:nth-child(2) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="/">Stemzel</a>
+    <nav>
+      <a href="/#benefits">Benefits</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/privacy/">Privacy</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Support</h1>
+    <p class="lead">Need help with imports, splitting, purchases, or exports? Reach us by email or check the FAQs below.</p>
+
+    <section class="contact" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Email support</h2>
+      <p>Send a note and we’ll get back to you as soon as we can.</p>
+      <a class="email" href="mailto:support@focuznow.com">support@focuznow.com</a>
+      <p style="margin-top:16px">It helps if you include:</p>
+      <ul style="margin:8px 0 0;padding-left:1.2em;color:#cfcfcf;font-size:15px">
+        <li>Your iPhone model and iOS version</li>
+        <li>Stemzel version (Settings → bottom of the screen)</li>
+        <li>A short description of what happened</li>
+      </ul>
+    </section>
+
+    <h2 class="section" id="faqs">FAQs</h2>
+
+    <details class="faq">
+      <summary>How do I unlock Stemzel or restore a purchase?</summary>
+      <p>Stemzel is a one-time unlock through the App Store. If you already bought it, open Stemzel and use <strong style="color:var(--text)">Restore Purchase</strong> on the paywall. Make sure you’re signed into the same Apple ID you used to buy.</p>
+    </details>
+
+    <details class="faq">
+      <summary>How do I import a song?</summary>
+      <p>You can import in three ways:</p>
+      <ul>
+        <li><strong style="color:var(--text)">Files</strong> — pick audio or video from Files / iCloud (MP3, M4A, WAV, and common video formats with an audio track).</li>
+        <li><strong style="color:var(--text)">URL</strong> — paste a direct link to an audio file. Sharing pages (YouTube, Spotify, Drive preview pages, etc.) aren’t supported.</li>
+        <li><strong style="color:var(--text)">Record</strong> — capture audio with the mic (allow microphone access when prompted).</li>
+      </ul>
+    </details>
+
+    <details class="faq">
+      <summary>Does my audio leave my iPhone?</summary>
+      <p>No. Stem separation runs fully on device. Your music isn’t uploaded to Stemzel servers for processing. See the <a href="/privacy/">Privacy Policy</a> for details.</p>
+    </details>
+
+    <details class="faq">
+      <summary>What stems does Stemzel create?</summary>
+      <p>Stemzel splits a track into vocals, drums, bass, and other, then lets you mix and export them.</p>
+    </details>
+
+    <details class="faq">
+      <summary>Why is a URL import failing?</summary>
+      <p>Use a direct file URL that ends in something like <code style="color:var(--text)">.mp3</code> or <code style="color:var(--text)">.m4a</code>. Links to streaming apps, social posts, or cloud “share” pages usually won’t work. Download the file first, then import from Files if needed.</p>
+    </details>
+
+    <details class="faq">
+      <summary>Separation is slow or the app feels hot</summary>
+      <p>On-device ML uses the Neural Engine / GPU and can take a bit on longer tracks. Keep Stemzel in the foreground while processing, and try a shorter clip if you’re testing. Closing other heavy apps can help on older devices.</p>
+    </details>
+
+    <details class="faq">
+      <summary>How do I export stems?</summary>
+      <p>After a split, open the mixer / results screen and export the stems you want through the share sheet (Files, AirDrop, another app, etc.).</p>
+    </details>
+
+    <details class="faq">
+      <summary>Refunds</summary>
+      <p>Purchases go through Apple. Refunds follow App Store policies — request one from <a href="https://reportaproblem.apple.com/">reportaproblem.apple.com</a> or your Apple purchase history.</p>
+    </details>
+
+    <footer class="page-foot">
+      © 2026 Stemzel · <a href="/">stemzel.com</a> · <a href="/terms-of-service/">Terms</a> · <a href="/privacy/">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>
